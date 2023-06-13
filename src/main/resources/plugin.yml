@@ -1,0 +1,4 @@
+name: Vanilla
+version: '${project.version}'
+main: be.nadtum.vanilla.Main
+api-version: 1.20
