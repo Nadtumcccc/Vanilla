@@ -22,7 +22,7 @@ class CommandCoin : CommandExecutor, TabExecutor {
 
         when (args.size){
             0 -> {
-                player.sendMessage("vous avez ${data?.coin} coins.")
+                player.sendMessage("vous avez ${data?.getCoin()} coins.")
                 return true
             }
 
@@ -36,9 +36,16 @@ class CommandCoin : CommandExecutor, TabExecutor {
                     return false
                 }
 
-                data?.coin =+ Integer.parseInt(args[1])
+                val target = Bukkit.getPlayer(args[0])
 
-                player.sendMessage("vous avez ajouté ${args[1]} coins au joueur ${Bukkit.getPlayer(args[0])?.name}.")
+                if (target == null) {
+                    player.sendMessage("Le joueur ${args[0]} n'est pas en ligne.")
+                    return false
+                }
+
+                data?.addCoin(Integer.parseInt(args[1]))
+
+                player.sendMessage("vous avez ajouté ${args[1]} coins au joueur ${target.name}.")
                 return true
             }
         }
