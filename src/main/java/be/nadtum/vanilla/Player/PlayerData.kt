@@ -8,7 +8,7 @@ private val playerDatas: HashMap<Player, PlayerData> = HashMap()
 
 class PlayerData(private val player: Player) {
 
-    var coin: Int = 200
+    private var coin: Int = 200
     private var life: Double = 20.0
 
     private val file: File
@@ -47,6 +47,9 @@ class PlayerData(private val player: Player) {
     companion object {
 
         fun getPlayerData(player: Player): PlayerData? {
+            if(!playerDatas.containsKey(player)) {
+                return null
+            }
             return playerDatas[player]
         }
 
@@ -55,9 +58,43 @@ class PlayerData(private val player: Player) {
         }
 
         fun removePlayerData(player: Player) {
-            playerDatas.remove(player)
+            if(playerDatas.containsKey(player)){
+                playerDatas.remove(player)
+            }
         }
 
+    }
+
+    fun getCoin(): Int {
+        return coin
+    }
+
+    fun setCoin(coin: Int) {
+        this.coin = coin
+    }
+
+    fun addCoin(coin: Int) {
+        this.coin += coin
+    }
+
+    fun removeCoin(coin: Int){
+        this.coin -= coin
+    }
+
+    fun getLife(): Double {
+        return life
+    }
+
+    fun setLife(life: Double) {
+        this.life = life
+    }
+
+    fun addLife(life: Double) {
+        this.life += life
+    }
+
+    fun removeLife(life: Double) {
+        this.life -= life
     }
 
     fun getFile(): File {
