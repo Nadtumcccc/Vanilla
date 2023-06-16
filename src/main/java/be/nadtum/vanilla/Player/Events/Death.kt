@@ -1,4 +1,4 @@
-package be.nadtum.vanilla.Player
+package be.nadtum.vanilla.Player.Events
 
 import org.bukkit.event.Listener
 

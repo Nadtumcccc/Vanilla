@@ -1,37 +1,66 @@
 package be.nadtum.vanilla.Player
 
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import java.io.File
 
-private val playerDatas :HashMap<Player, PlayerData> = HashMap()
+private val playerDatas: HashMap<Player, PlayerData> = HashMap()
 
-class PlayerData(
+class PlayerData(private val player: Player) {
 
-    val name :String,
-    val coin :Int,
-    val life :Double,
+    var coin: Int = 200
+    private var life: Double = 20.0
 
-) {
-
-    private val file = File("plugins/Vanilla/Players/$name.yml")
+    private val file: File
 
     init {
+        val dataFolder = File("plugins/Vanilla/Players")
+        dataFolder.mkdirs()
 
-        //check if file player exist
+        file = File(dataFolder, "${player.name}.yml")
+        file.createNewFile()
 
+        load()
 
+        setPlayerData(player, this)
+    }
+
+    private fun load(): PlayerData {
+        val config: YamlConfiguration = YamlConfiguration.loadConfiguration(getFile())
+
+        if(config.contains("profil")){
+            coin = config.getInt("profil.coin")
+            life = config.getDouble("profil.life")
+        }
+        return this
+    }
+
+    fun save() {
+        val config: YamlConfiguration = YamlConfiguration.loadConfiguration(getFile())
+
+        config.set("profil.coin", coin)
+        config.set("profil.life", life)
+
+        config.save(file)
     }
 
     companion object {
 
+        fun getPlayerData(player: Player): PlayerData? {
+            return playerDatas[player]
+        }
+
+        fun setPlayerData(player: Player, data: PlayerData) {
+            playerDatas[player] = data
+        }
+
+        fun removePlayerData(player: Player) {
+            playerDatas.remove(player)
+        }
+
     }
 
-    fun getPlayerDatas(player: Player): PlayerData? {
-        return playerDatas[player]
-    }
-
-    fun getFile(): File{
+    fun getFile(): File {
         return file
     }
-
 }

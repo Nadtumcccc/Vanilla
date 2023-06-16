@@ -1,4 +1,10 @@
 name: Vanilla
 version: '${project.version}'
 main: be.nadtum.vanilla.Main
-api-version: 1.20
+api-version: '1.20'
+commands:
+  money:
+    aliases:
+      - coins
+      - balance
+    description: "permet de voir ou gérer la money d'un joueur"
