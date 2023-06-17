@@ -13,7 +13,7 @@ class CommandCoin : CommandExecutor, TabExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player) {
-            Bukkit.getLogger().info("You can only use this command in-game.")
+            Bukkit.getLogger().info("Vous ne pouvez utiliser cette commande que dans le jeu.")
         }
 
         val player = sender as Player
@@ -27,6 +27,20 @@ class CommandCoin : CommandExecutor, TabExecutor {
             }
 
             1 -> {
+                if(!player.hasPermission("coin.show")){
+                    player.sendMessage("Vous n'avez pas la permission de faire cette action")
+                    return false
+                }
+
+                val target = Bukkit.getPlayer(args[0])
+
+                if (target == null) {
+                    player.sendMessage("Le joueur ${args[0]} n'est pas en ligne.")
+                    return false
+                }
+
+                player.sendMessage("le joueur ${player.name} a ${PlayerData.getPlayerData(target)?.getCoin()} coins.")
+
                 return true
             }
 
@@ -43,7 +57,7 @@ class CommandCoin : CommandExecutor, TabExecutor {
                     return false
                 }
 
-                data?.addCoin(Integer.parseInt(args[1]))
+                PlayerData.getPlayerData(target)?.addCoin(Integer.parseInt(args[1]))
 
                 player.sendMessage("vous avez ajouté ${args[1]} coins au joueur ${target.name}.")
                 return true
@@ -53,14 +67,10 @@ class CommandCoin : CommandExecutor, TabExecutor {
         return false
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<out String>): MutableList<String>? {
+    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<out String>): MutableList<String> {
         val list = ArrayList<String>()
 
         when (args.size) {
-            0 -> {
-                return list
-            }
-
             1 -> {
                 list.addAll(Bukkit.getOnlinePlayers().map(Player::getName))
                 return list
