@@ -17,7 +17,8 @@ class Connection : Listener {
 
         val data = PlayerData(player)
 
-        // Set the join message with player name
+        data.setMaxHealth(player, data.getHealth())
+
         event.joinMessage = "§7[§a+§7] ${player.name}"
     }
 
@@ -27,7 +28,6 @@ class Connection : Listener {
 
         PlayerData.getPlayerData(player)?.save()
 
-        // Set the quit message with player name
         event.quitMessage = "§7[§c-§7] ${player.name}"
     }
 }

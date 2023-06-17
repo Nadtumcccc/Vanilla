@@ -1,5 +1,7 @@
 package be.nadtum.vanilla.Player
 
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeInstance
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import java.io.File
@@ -9,7 +11,7 @@ private val playerDatas: HashMap<Player, PlayerData> = HashMap()
 class PlayerData(private val player: Player) {
 
     private var coin: Int = 200
-    private var life: Double = 20.0
+    private var health: Double = 20.0
 
     private val file: File
 
@@ -30,7 +32,7 @@ class PlayerData(private val player: Player) {
 
         if(config.contains("profil")){
             coin = config.getInt("profil.coin")
-            life = config.getDouble("profil.life")
+            health = config.getDouble("profil.life")
         }
         return this
     }
@@ -39,7 +41,7 @@ class PlayerData(private val player: Player) {
         val config: YamlConfiguration = YamlConfiguration.loadConfiguration(getFile())
 
         config.set("profil.coin", coin)
-        config.set("profil.life", life)
+        config.set("profil.life", health)
 
         config.save(file)
     }
@@ -81,20 +83,24 @@ class PlayerData(private val player: Player) {
         this.coin -= coin
     }
 
-    fun getLife(): Double {
-        return life
+    fun getHealth(): Double {
+        return health
     }
 
-    fun setLife(life: Double) {
-        this.life = life
+    fun setHealth(health: Double) {
+        this.health = health
     }
 
-    fun addLife(life: Double) {
-        this.life += life
+    fun setMaxHealth(player: Player, health: Double) {
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = health
     }
 
-    fun removeLife(life: Double) {
-        this.life -= life
+    fun addHealth(health: Double) {
+        this.health += health
+    }
+
+    fun removeHealth(health: Double) {
+        this.health -= health
     }
 
     fun getFile(): File {
