@@ -8,3 +8,9 @@ commands:
       - coins
       - balance
     description: "permet de voir ou gérer la money d'un joueur"
+  warp:
+    aliases:
+      - lobby
+      - hub
+      - spawn
+    description: "permet de gérer ou de se téléporter à des warps"
